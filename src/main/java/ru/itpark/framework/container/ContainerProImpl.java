@@ -43,7 +43,7 @@ public class ContainerProImpl implements Container {
                     }));
 
             if (currentGeneration.isEmpty()) {
-                throw new RuntimeException("The following components were not found: "
+                throw new RuntimeException("Can not create instances of the following components: "
                         + new HashSet<>(types).removeAll(components.keySet()));
             }
             components.putAll(currentGeneration);
