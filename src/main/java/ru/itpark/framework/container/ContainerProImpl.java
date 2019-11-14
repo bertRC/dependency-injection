@@ -43,8 +43,10 @@ public class ContainerProImpl implements Container {
                     }));
 
             if (currentGeneration.isEmpty()) {
+                HashSet<Class<?>> missingComponents = new HashSet<>(types);
+                missingComponents.removeAll(components.keySet());
                 throw new RuntimeException("Can not create instances of the following components: "
-                        + new HashSet<>(types).removeAll(components.keySet()));
+                        + missingComponents);
             }
             components.putAll(currentGeneration);
             System.out.println(currentGeneration.keySet());
