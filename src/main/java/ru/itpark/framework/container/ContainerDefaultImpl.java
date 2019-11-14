@@ -16,6 +16,7 @@ public class ContainerDefaultImpl implements Container {
 
         final Set<Class<?>> types = reflections.getTypesAnnotatedWith(Component.class, true).stream()
                 .filter(o -> !o.isAnnotation()).collect(Collectors.toSet());
+        System.out.println("--- Всё что есть с аннотациями @Component ---");
         System.out.println(types);
 
         final List<Class<?>> simple = types.stream().filter(o -> {
@@ -26,6 +27,9 @@ public class ContainerDefaultImpl implements Container {
             final int parameterCount = o.getConstructors()[0].getParameterCount();
             return parameterCount == 0;
         }).collect(Collectors.toList());
+
+        System.out.println("--- Классы с простым конструктором ---");
+        System.out.println(simple);
 
         // components -> Class vs Object
         // map
@@ -115,14 +119,13 @@ public class ContainerDefaultImpl implements Container {
                 }));
         components.putAll(fourthGeneration);
 
+        System.out.println("--- Найденные компоненты ---");
         System.out.println(components);
         return components;
     }
 
     public static void main(String[] args) {
-//    System.out.println(new Reflections().getTypesAnnotatedWith(Component.class, true));
         final Container container = new ContainerDefaultImpl();
         final Map<Class, Object> components = container.init();
-//        System.out.println(components);
     }
 }

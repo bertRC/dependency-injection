@@ -8,7 +8,7 @@ public class AutoService {
   private final AutoRepository repository;
 
   public AutoService(AutoRepository repository) {
-    System.out.println("created");
+    System.out.println("*AutoService created*");
     this.repository = repository;
   }
 }

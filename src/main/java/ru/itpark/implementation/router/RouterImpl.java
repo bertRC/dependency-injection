@@ -10,9 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Component
-@AllArgsConstructor
+//@AllArgsConstructor
 public class RouterImpl implements Router {
   private final AutoController autoController;
+
+  public RouterImpl(AutoController autoController) {
+    System.out.println("*Router created*");
+    this.autoController = autoController;
+  }
 
   @Override
   public Object route(HttpServletRequest request, HttpServletResponse response) {
