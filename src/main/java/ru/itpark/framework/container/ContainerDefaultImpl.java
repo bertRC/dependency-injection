@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ContainerProImpl implements Container {
+public class ContainerDefaultImpl implements Container {
 
     private Optional<Constructor<?>> getFirstSuitableConstructor(Class<?> type, Set<Class> setOfComponents) {
         return Arrays.stream(type.getConstructors())
