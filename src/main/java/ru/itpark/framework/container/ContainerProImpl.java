@@ -12,10 +12,8 @@ public class ContainerProImpl implements Container {
 
     private Optional<Constructor<?>> getFirstSuitableConstructor(Class<?> type, Set<Class> setOfComponents) {
         return Arrays.stream(type.getConstructors())
-                .filter(c -> {
-                    Class<?>[] parameterTypes = c.getParameterTypes();
-                    return setOfComponents.containsAll(Arrays.asList(parameterTypes));
-                }).findFirst();
+                .filter(o -> setOfComponents.containsAll(Arrays.asList(o.getParameterTypes())))
+                .findFirst();
     }
 
     @Override
@@ -49,7 +47,6 @@ public class ContainerProImpl implements Container {
                         + missingComponents);
             }
             components.putAll(currentGeneration);
-            System.out.println(currentGeneration.keySet());
         }
 
         if (components.isEmpty()) {
