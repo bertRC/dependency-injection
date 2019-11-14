@@ -52,6 +52,10 @@ public class ContainerProImpl implements Container {
             System.out.println(currentGeneration.keySet());
         }
 
+        if (components.isEmpty()) {
+            throw new RuntimeException("There is no components");
+        }
+
         return components;
     }
 
