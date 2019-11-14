@@ -33,6 +33,7 @@ public class ContainerDefaultImpl implements Container {
 
         // components -> Class vs Object
         // map
+        System.out.println("--- Первое поколение ---");
         final Map<Class, Object> firstGeneration = simple.stream()
                 .map(o -> {
                     try {
@@ -44,8 +45,11 @@ public class ContainerDefaultImpl implements Container {
                 })
                 .collect(Collectors.toMap(o -> o.getClass(), o -> o));
         components.putAll(firstGeneration);
+        System.out.println(firstGeneration);
 
+        System.out.println("--- Второе поколение ---");
         Map<Class, Object> secondGeneration = types.stream()
+                .filter(o -> !components.containsKey(o))
                 .filter(o -> {
                     final Constructor<?>[] constructors = o.getConstructors();
                     if (constructors.length != 1) {
@@ -68,7 +72,9 @@ public class ContainerDefaultImpl implements Container {
                     }
                 }));
         components.putAll(secondGeneration);
+        System.out.println(secondGeneration);
 
+        System.out.println("--- Третье поколение ---");
         Map<Class, Object> thirdGeneration = types.stream()
                 .filter(o -> !components.containsKey(o))
                 .filter(o -> {
@@ -93,7 +99,9 @@ public class ContainerDefaultImpl implements Container {
                     }
                 }));
         components.putAll(thirdGeneration);
+        System.out.println(thirdGeneration);
 
+        System.out.println("--- Четвертое поколение ---");
         Map<Class, Object> fourthGeneration = types.stream()
                 .filter(o -> !components.containsKey(o))
                 .filter(o -> {
@@ -118,6 +126,7 @@ public class ContainerDefaultImpl implements Container {
                     }
                 }));
         components.putAll(fourthGeneration);
+        System.out.println(fourthGeneration);
 
         System.out.println("--- Найденные компоненты ---");
         System.out.println(components);
