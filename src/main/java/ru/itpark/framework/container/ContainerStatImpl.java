@@ -10,8 +10,8 @@ public class ContainerStatImpl implements Container {
   @Override
   public Map<Class, Object> init() {
     Map<Class, Object> components = new HashMap<>();
-    components.put(AutoRepository.class, new AutoRepository());
-    components.put(AutoService.class, new AutoService((AutoRepository) components.get(AutoRepository.class)));
+//    components.put(AutoRepository.class, new AutoRepository());
+//    components.put(AutoService.class, new AutoService((AutoRepository) components.get(AutoRepository.class)));
     return components;
   }
 }

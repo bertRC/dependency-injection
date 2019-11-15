@@ -55,4 +55,9 @@ public class ContainerProImpl implements Container {
 
         return components;
     }
+
+    public static void main(String[] args) {
+        final Container container = new ContainerProImpl();
+        System.out.println(container.init());
+    }
 }
