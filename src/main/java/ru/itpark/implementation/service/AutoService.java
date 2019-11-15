@@ -11,9 +11,4 @@ public class AutoService {
         System.out.println("*AutoService created*");
         this.repository = repository;
     }
-
-    public AutoService(int someNumber, AutoRepository repository) {
-        System.out.println("*AutoService created by 2nd constructor*");
-        this.repository = repository;
-    }
 }
