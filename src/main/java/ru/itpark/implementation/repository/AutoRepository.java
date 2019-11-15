@@ -17,5 +17,7 @@ public class AutoRepository {
         this.jdbcTemplate = jdbcTemplate;
         InitialContext context = new InitialContext();
         ds = (DataSource) context.lookup(ResourcesPaths.dbPath);
+//        String sql = "CREATE TABLE IF NOT EXISTS autos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT NOT NULL, image TEXT);";
+//        jdbcTemplate.executeUpdate(ds, sql);
     }
 }
