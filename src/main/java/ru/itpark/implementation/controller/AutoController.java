@@ -2,7 +2,7 @@ package ru.itpark.implementation.controller;
 
 import lombok.RequiredArgsConstructor;
 import ru.itpark.framework.annotation.Component;
-import ru.itpark.implementation.model.Auto;
+import ru.itpark.domain.Auto;
 import ru.itpark.implementation.service.AutoService;
 
 import java.util.Collections;

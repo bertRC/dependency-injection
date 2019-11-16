@@ -1,7 +1,7 @@
 package ru.itpark.implementation.repository;
 
 import ru.itpark.framework.annotation.Component;
-import ru.itpark.implementation.model.Auto;
+import ru.itpark.domain.Auto;
 import ru.itpark.implementation.util.JdbcTemplate;
 import ru.itpark.implementation.util.ResourcesPaths;
 
