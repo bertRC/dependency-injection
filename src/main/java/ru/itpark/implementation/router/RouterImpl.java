@@ -35,6 +35,8 @@ public class RouterImpl implements Router {
         System.out.println("----");
         System.out.println(request.getPathInfo());
         System.out.println("----");
+        System.out.println(request.getContextPath());
+        System.out.println("----");
         Enumeration<String> parameterNames = request.getParameterNames();
         System.out.println(parameterNames);
         System.out.println("----");
