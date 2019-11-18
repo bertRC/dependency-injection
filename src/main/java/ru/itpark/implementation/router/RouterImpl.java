@@ -7,6 +7,7 @@ import ru.itpark.framework.router.Router;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 import java.util.List;
 
 @Component
@@ -16,17 +17,35 @@ public class RouterImpl implements Router {
 
     @Override
     public Object route(HttpServletRequest request, HttpServletResponse response) {
-        switch (request.getRequestURI()) {
-            // mapping -> url -> handler (обработчик)
-            case "/search.do": // search.do?name=...
-                final String name = request.getParameter("name");
-                List<String> result = autoController.doSearch(name);
-                // TODO:
-                // request.setAttribute("result", result);
-                // request.getRequestDispatcher("//").forward(request, response);
-            default:
-                // 404
-                return null;
-        }
+//        switch (request.getRequestURI()) {
+//            // mapping -> url -> handler (обработчик)
+//            case "/search.do": // search.do?name=...
+//                final String name = request.getParameter("name");
+//                List<String> result = autoController.doSearch(name);
+//                // TODO:
+//                // request.setAttribute("result", result);
+//                // request.getRequestDispatcher("//").forward(request, response);
+//            default:
+//                // 404
+//                return null;
+//        }
+
+        System.out.println("-- Begin --");
+        System.out.println(request);
+        System.out.println("----");
+        System.out.println(request.getPathInfo());
+        System.out.println("----");
+        Enumeration<String> parameterNames = request.getParameterNames();
+        System.out.println(parameterNames);
+        System.out.println("----");
+        Enumeration<String> attributeNames = request.getAttributeNames();
+        System.out.println(attributeNames);
+        System.out.println("----");
+        System.out.println(request.getMethod());
+        System.out.println("----");
+        System.out.println(request.getQueryString());
+        System.out.println("-- End --");
+
+        return null;
     }
 }
