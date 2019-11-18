@@ -55,11 +55,4 @@ public class ContainerProImpl implements Container {
 
         return components;
     }
-
-    public static void main(String[] args) {
-        // TODO:
-        // Don't forget to delete me
-        final Container container = new ContainerProImpl();
-        System.out.println(container.init());
-    }
 }
