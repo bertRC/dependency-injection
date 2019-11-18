@@ -21,7 +21,7 @@ public class FrontController extends HttpServlet {
         final Map<Class, Object> components = container.init();
         router = (Router) components.values().stream()
                 .filter(o -> Arrays.asList(o.getClass().getInterfaces()).contains(Router.class))
-                .findFirst().orElseThrow(() -> new RuntimeException());
+                .findFirst().orElseThrow(RuntimeException::new);
     }
 
     @Override
