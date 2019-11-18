@@ -1,12 +1,17 @@
 package ru.itpark.implementation.router;
 
 import lombok.AllArgsConstructor;
+import ru.itpark.domain.Auto;
 import ru.itpark.framework.annotation.Component;
 import ru.itpark.implementation.controller.AutoController;
 import ru.itpark.framework.router.Router;
+import ru.itpark.implementation.util.ResourcesPaths;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -30,22 +35,29 @@ public class RouterImpl implements Router {
 //                return null;
 //        }
 
-        System.out.println("-- Begin --");
-        System.out.println("request.getPathInfo()");
-        System.out.println(request.getPathInfo());
-        System.out.println("request.getContextPath()");
-        System.out.println(request.getContextPath());
-        Enumeration<String> parameterNames = request.getParameterNames();
-        System.out.println("parameterNames");
-        System.out.println(parameterNames);
-        Enumeration<String> attributeNames = request.getAttributeNames();
-        System.out.println("attributeNames");
-        System.out.println(attributeNames);
-        System.out.println("request.getMethod()");
-        System.out.println(request.getMethod());
-        System.out.println("request.getQueryString()");
-        System.out.println(request.getQueryString());
-        System.out.println("-- End --");
+        String method = request.getMethod();
+        if (method.equals("GET")) {
+            try {
+                request.setAttribute("items", autoController.getAll());
+                request.getRequestDispatcher(ResourcesPaths.catalogJspPath).forward(request, response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        } else if (method.equals("POST")) {
+            try {
+                String name = request.getParameter("name");
+                String description = request.getParameter("description");
+//            Part part = request.getPart("image");
+
+//            var image = fileService.writeFile(part);
+
+//            autoService.create(name, description, image);
+                autoController.create(new Auto(0, name, description, "####"));
+                response.sendRedirect(String.join("/", request.getContextPath(), request.getServletPath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         return null;
     }
