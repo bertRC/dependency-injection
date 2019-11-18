@@ -31,20 +31,19 @@ public class RouterImpl implements Router {
 //        }
 
         System.out.println("-- Begin --");
-        System.out.println(request);
-        System.out.println("----");
+        System.out.println("request.getPathInfo()");
         System.out.println(request.getPathInfo());
-        System.out.println("----");
+        System.out.println("request.getContextPath()");
         System.out.println(request.getContextPath());
-        System.out.println("----");
         Enumeration<String> parameterNames = request.getParameterNames();
+        System.out.println("parameterNames");
         System.out.println(parameterNames);
-        System.out.println("----");
         Enumeration<String> attributeNames = request.getAttributeNames();
+        System.out.println("attributeNames");
         System.out.println(attributeNames);
-        System.out.println("----");
+        System.out.println("request.getMethod()");
         System.out.println(request.getMethod());
-        System.out.println("----");
+        System.out.println("request.getQueryString()");
         System.out.println(request.getQueryString());
         System.out.println("-- End --");
 
