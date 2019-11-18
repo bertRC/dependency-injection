@@ -35,6 +35,11 @@ public class RouterImpl implements Router {
 //                return null;
 //        }
 
+        System.out.println("request.getMethod()");
+        System.out.println(request.getMethod());
+        System.out.println("request.getPathInfo()");
+        System.out.println(request.getPathInfo());
+
         String method = request.getMethod();
         if (method.equals("GET")) {
             try {
@@ -53,6 +58,10 @@ public class RouterImpl implements Router {
 
 //            autoService.create(name, description, image);
                 autoController.create(new Auto(0, name, description, "####"));
+                System.out.println("request.getContextPath()");
+                System.out.println(request.getContextPath());
+                System.out.println("request.getServletPath()");
+                System.out.println(request.getServletPath());
                 response.sendRedirect(String.join("/", request.getContextPath(), request.getServletPath()));
             } catch (IOException e) {
                 e.printStackTrace();
