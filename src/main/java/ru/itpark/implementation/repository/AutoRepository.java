@@ -46,4 +46,19 @@ public class AutoRepository {
         auto.setId(id);
         return auto;
     }
+
+    public List<Auto> search(String text) {
+        String sql = "SELECT id, name, description, image FROM autos WHERE name LIKE ? OR description LIKE ?;";
+        return jdbcTemplate.executeQuery(ds, sql, stmt -> {
+            stmt.setString(1, "%" + text + "%");
+            stmt.setString(2, "%" + text + "%");
+            return stmt;
+        }, rs ->
+                new Auto(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("image")
+                ));
+    }
 }
