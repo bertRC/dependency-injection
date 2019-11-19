@@ -19,4 +19,8 @@ public class AutoService {
     public Auto create(Auto auto) {
         return repository.create(auto);
     }
+
+    public List<Auto> search(String text) {
+        return repository.search(text);
+    }
 }
