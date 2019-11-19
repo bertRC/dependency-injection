@@ -12,13 +12,8 @@
 
     <servlet-mapping>
         <servlet-name>front-controller</servlet-name>
-<!--        <url-pattern>*.do</url-pattern>-->
         <url-pattern/>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>front-controller</servlet-name>
-        <!--        <url-pattern>*.do</url-pattern>-->
+        <url-pattern>*.do</url-pattern>
         <url-pattern>/images/*</url-pattern>
     </servlet-mapping>
 
