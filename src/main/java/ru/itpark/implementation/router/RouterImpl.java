@@ -71,7 +71,6 @@ public class RouterImpl implements Router {
 
                 String image = autoController.writeFile(part);
 
-//            autoService.create(name, description, image);
                 autoController.create(new Auto(0, name, description, image));
                 System.out.println("request.getContextPath()");
                 System.out.println(request.getContextPath());
