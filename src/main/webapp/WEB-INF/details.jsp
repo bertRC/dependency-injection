@@ -1,0 +1,40 @@
+<%@ page import="ru.itpark.implementation.model.Auto" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+    <%@ include file="bootstrap-css.jsp" %>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <% if (request.getAttribute("item") != null) { %>
+            <h1>Details</h1>
+
+            <div class="row">
+                <% Auto item = (Auto) request.getAttribute("item"); %>
+                <div class="col-sm-6 mt-3">
+                    <div class="card">
+                        <img src="<%= request.getContextPath() %>/images/<%= item.getImage() %>" class="card-img-top"
+                             alt="<%= item.getName() %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= item.getName() %>
+                            </h5>
+                            <p class="card-text"><%= item.getDescription()%>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form action="<%= request.getContextPath() %>/remove/<%= item.getId() %>" method="post" class="mt-3">
+                <button type="submit" class="btn btn-primary mt-3">Remove</button>
+            </form>
+            <% } %>
+        </div>
+    </div>
+</div>
+<%@ include file="bootstrap-scripts.jsp" %>
+</body>
+</html>
