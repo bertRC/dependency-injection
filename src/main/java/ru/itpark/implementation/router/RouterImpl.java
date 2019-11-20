@@ -1,28 +1,28 @@
 package ru.itpark.implementation.router;
 
 import lombok.AllArgsConstructor;
+import lombok.val;
 import ru.itpark.domain.Auto;
+import ru.itpark.exceptions.NotFoundException;
 import ru.itpark.framework.annotation.Component;
-import ru.itpark.implementation.controller.AutoController;
 import ru.itpark.framework.router.Router;
+import ru.itpark.implementation.service.AutoService;
+import ru.itpark.implementation.service.FileService;
 import ru.itpark.implementation.util.ResourcesPaths;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Enumeration;
-import java.util.List;
 
 @Component
 @AllArgsConstructor
 public class RouterImpl implements Router {
-    private final AutoController autoController;
+    private final AutoService autoService;
+    private final FileService fileService;
 
     @Override
-    public Object route(HttpServletRequest request, HttpServletResponse response) {
+    public void route(HttpServletRequest request, HttpServletResponse response) {
 //        switch (request.getRequestURI()) {
 //            // mapping -> url -> handler (обработчик)
 //            case "/search.do": // search.do?name=...
@@ -36,52 +36,72 @@ public class RouterImpl implements Router {
 //                return null;
 //        }
 
-        System.out.println("request.getMethod()");
-        System.out.println(request.getMethod());
-        System.out.println("request.getPathInfo()");
-        System.out.println(request.getPathInfo());
-        System.out.println("request.getRequestURI()");
-        System.out.println(request.getRequestURI());
+        try {
+            val rootUrl = request.getContextPath().isEmpty() ? "/" : request.getContextPath();
+            val url = request.getRequestURI().substring(request.getContextPath().length());
 
-        String method = request.getMethod();
-        if ((method.equals("GET")) && (request.getPathInfo() != null) && (request.getRequestURI().startsWith("/images"))) {
-            String[] parts = request.getPathInfo().split("/");
-            if (parts.length != 2) {
-                throw new RuntimeException("Not found");
-            }
-            try {
-                autoController.readFile(parts[1], response.getOutputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if (url.equals("/")) {
+                if (request.getMethod().equals("GET")) {
+                    val items = autoService.getAll();
+                    request.setAttribute("items", items);
+                    request.getRequestDispatcher(ResourcesPaths.frontpageJsp).forward(request, response);
+                    return;
+                }
 
-        } else if (method.equals("GET")) {
-            try {
-                request.setAttribute("items", autoController.getAll());
-                request.getRequestDispatcher(ResourcesPaths.catalogJspPath).forward(request, response);
-            } catch (ServletException | IOException e) {
-                e.printStackTrace();
+                if (request.getMethod().equals("POST")) {
+                    val name = request.getParameter("name");
+                    val description = request.getParameter("description");
+                    val part = request.getPart("image");
+                    autoService.create(new Auto(0, name, description, null), part);
+                    response.sendRedirect(rootUrl);
+                    return;
+                }
+
+                throw new NotFoundException();
             }
 
-        } else if (method.equals("POST")) {
+            // Sample: /details/{id}
+            // TODO: обычно парсинг делают через регулярные выражения, но тут простой вариант
+            if (url.startsWith("/details/")) {
+                if (request.getMethod().equals("GET")) {
+                    val id = Integer.parseInt(url.substring("/details/".length()));
+                    val item = autoService.getById(id);
+                    request.setAttribute("item", item);
+                    request.getRequestDispatcher(ResourcesPaths.detailsJsp).forward(request, response);
+                    return;
+                }
+
+                throw new NotFoundException();
+            }
+
+            if (url.startsWith("/remove/")) {
+                if (request.getMethod().equals("POST")) {
+                    val id = Integer.parseInt(url.substring("/remove/".length()));
+                    autoService.removeById(id);
+                    response.sendRedirect(rootUrl);
+                    return;
+                }
+
+                throw new NotFoundException();
+            }
+
+            if (url.startsWith("/images/")) {
+                if (request.getMethod().equals("GET")) {
+                    val id = url.substring("/images/".length());
+                    fileService.readFile(id, response.getOutputStream());
+                    return;
+                }
+
+                throw new NotFoundException();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             try {
-                String name = request.getParameter("name");
-                String description = request.getParameter("description");
-                Part part = request.getPart("file");
-
-                String image = autoController.writeFile(part);
-
-                autoController.create(new Auto(0, name, description, image));
-                System.out.println("request.getContextPath()");
-                System.out.println(request.getContextPath());
-                System.out.println("request.getServletPath()");
-                System.out.println(request.getServletPath());
-                response.sendRedirect(String.join("/", request.getContextPath(), request.getServletPath()));
-            } catch (IOException | ServletException e) {
-                e.printStackTrace();
+                request.getRequestDispatcher(ResourcesPaths.errorJsp).forward(request, response);
+            } catch (ServletException | IOException ex) {
+                ex.printStackTrace();
             }
         }
-
-        return null;
     }
 }
