@@ -23,9 +23,9 @@ public class RouterImpl implements Router {
     private final AutoService autoService;
     private final FileService fileService;
 
-    private final Pattern detailsPattern = Pattern.compile("/details/(\\d+)$");
-    private final Pattern removePattern = Pattern.compile("/remove/(\\d+)$");
-    private final Pattern imagesPattern = Pattern.compile("/images/(.+)");
+//    private final Pattern detailsPattern = Pattern.compile("/details/(\\d+)$");
+//    private final Pattern removePattern = Pattern.compile("/remove/(\\d+)$");
+//    private final Pattern imagesPattern = Pattern.compile("/images/(.+)");
 
     @Override
     public void route(HttpServletRequest request, HttpServletResponse response) {
@@ -118,8 +118,8 @@ class Main {
         String regex = "/images/(\\d+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
-//        System.out.println(matcher.find());
         if (matcher.find()) {
+            System.out.println(matcher.group(0));
             System.out.println(matcher.group(1));
         }
     }
