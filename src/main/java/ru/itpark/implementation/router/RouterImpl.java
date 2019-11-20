@@ -14,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 @AllArgsConstructor
@@ -102,6 +104,19 @@ public class RouterImpl implements Router {
             } catch (ServletException | IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        String text = "/images/123k";
+        String regex = "/images/(\\d+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        System.out.println(matcher.find());
+        if (matcher.find()) {
+            System.out.println(matcher.group(1));
         }
     }
 }
