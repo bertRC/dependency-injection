@@ -1,5 +1,6 @@
 package ru.itpark.implementation.repository;
 
+import ru.itpark.exceptions.NotFoundException;
 import ru.itpark.framework.annotation.Component;
 import ru.itpark.domain.Auto;
 import ru.itpark.implementation.util.JdbcTemplate;
@@ -63,12 +64,22 @@ public class AutoRepository {
         return auto;
     }
 
-    public boolean removeById(int id) {
-        String sql = "DELETE FROM autos WHERE id = ?;";
-        return jdbcTemplate.executeUpdate(ds, sql, stmt -> {
+    public Optional<String> getImage(long id) {
+        String sql = "SELECT image FROM autos WHERE id = ?;";
+        return jdbcTemplate.executeQueryForObject(ds, sql, stmt -> {
             stmt.setLong(1, id);
             return stmt;
-        }) != 0;
+        }, rs -> rs.getString("image"));
+    }
+
+    public String removeById(long id) {
+        String image = getImage(id).orElseThrow(() -> new NotFoundException(String.format("Object with id %d not found", id)));
+        String sql = "DELETE FROM autos WHERE id = ?;";
+        jdbcTemplate.executeUpdate(ds, sql, stmt -> {
+            stmt.setLong(1, id);
+            return stmt;
+        });
+        return image;
     }
 
     public List<Auto> search(String text) {
