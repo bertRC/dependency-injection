@@ -13,7 +13,7 @@
             <h1>Catalog</h1>
 
             <form class="mt-3" action="<%= request.getContextPath() %>/search/">
-                <input name="text" class="form-control" type="search" placeholder="Search">
+                <input name="text" class="form-control" type="search" placeholder="Search" pattern=".{3,}" required title="3 characters minimum">
             </form>
 
             <div class="row">

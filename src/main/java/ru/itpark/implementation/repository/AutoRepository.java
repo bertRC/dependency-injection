@@ -17,6 +17,7 @@ import java.util.Optional;
 public class AutoRepository {
     private final JdbcTemplate jdbcTemplate;
     private final DataSource ds;
+    private static final int minTextLenght = 3;
 
     public AutoRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -88,6 +89,9 @@ public class AutoRepository {
     }
 
     public List<Auto> search(String text) {
+        if (text.length() < minTextLenght) {
+            throw new IllegalArgumentException("Text must contain at least 3 characters");
+        }
         String sql = "SELECT id, name, description, image FROM autos WHERE name LIKE ? OR description LIKE ?;";
         return jdbcTemplate.executeQuery(ds, sql, stmt -> {
             stmt.setString(1, "%" + text + "%");
