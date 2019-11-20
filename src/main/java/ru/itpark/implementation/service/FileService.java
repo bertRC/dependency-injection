@@ -43,4 +43,13 @@ public class FileService {
             throw new FileAccessException(e);
         }
     }
+
+    public boolean removeFile(String id) {
+        try {
+            val path = Paths.get(uploadPath).resolve(id);
+            return Files.deleteIfExists(path);
+        } catch (IOException e) {
+            throw new FileAccessException(e);
+        }
+    }
 }
