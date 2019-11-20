@@ -2,7 +2,7 @@ package ru.itpark.implementation.router;
 
 import lombok.AllArgsConstructor;
 import lombok.val;
-import ru.itpark.domain.Auto;
+import ru.itpark.implementation.model.Auto;
 import ru.itpark.exceptions.NotFoundException;
 import ru.itpark.framework.annotation.Component;
 import ru.itpark.framework.router.Router;
