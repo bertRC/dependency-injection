@@ -29,19 +29,6 @@ public class RouterImpl implements Router {
 
     @Override
     public void route(HttpServletRequest request, HttpServletResponse response) {
-//        switch (request.getRequestURI()) {
-//            // mapping -> url -> handler (обработчик)
-//            case "/search.do": // search.do?name=...
-//                final String name = request.getParameter("name");
-//                List<String> result = autoController.doSearch(name);
-//                // TODO:
-//                // request.setAttribute("result", result);
-//                // request.getRequestDispatcher("//").forward(request, response);
-//            default:
-//                // 404
-//                return null;
-//        }
-
         try {
             val rootUrl = request.getContextPath().isEmpty() ? "/" : request.getContextPath();
             val url = request.getRequestURI().substring(request.getContextPath().length());
@@ -124,12 +111,13 @@ public class RouterImpl implements Router {
 class Main {
     public static void main(String[] args) {
         String text = "/images/123";
-        String regex = "/images/(\\d+)$";
+        String regex = "/(.+)/(\\d+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
         if (matcher.find()) {
             System.out.println(matcher.group(0));
             System.out.println(matcher.group(1));
+            System.out.println(matcher.group(2));
         }
     }
 }
