@@ -31,6 +31,11 @@
             <form action="<%= request.getContextPath() %>/remove/<%= item.getId() %>" method="post" class="mt-3">
                 <button type="submit" class="btn btn-primary mt-3">Remove</button>
             </form>
+
+            <form class="mt-3">
+                <a href="/" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">To Homepage</a>
+            </form>
+
             <% } %>
         </div>
     </div>
