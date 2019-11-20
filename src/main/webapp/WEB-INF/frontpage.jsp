@@ -13,7 +13,7 @@
             <h1>Catalog</h1>
 
             <form class="mt-3" action="<%= request.getContextPath() %>/search/">
-                <input name="q" class="form-control" type="search" placeholder="Search">
+                <input name="text" class="form-control" type="search" placeholder="Search">
             </form>
 
             <div class="row">
