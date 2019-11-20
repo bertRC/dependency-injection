@@ -63,6 +63,14 @@ public class AutoRepository {
         return auto;
     }
 
+    public boolean removeById(int id) {
+        String sql = "DELETE FROM autos WHERE id = ?;";
+        return jdbcTemplate.executeUpdate(ds, sql, stmt -> {
+            stmt.setLong(1, id);
+            return stmt;
+        }) != 0;
+    }
+
     public List<Auto> search(String text) {
         String sql = "SELECT id, name, description, image FROM autos WHERE name LIKE ? OR description LIKE ?;";
         return jdbcTemplate.executeQuery(ds, sql, stmt -> {
