@@ -31,7 +31,8 @@ public class ContainerProImpl implements Container {
                     .filter(o -> !components.containsKey(o))
                     .filter(o -> getFirstSuitableConstructor(o, components.keySet()).isPresent())
                     .collect(Collectors.toMap(o -> o, o -> {
-                        final Constructor<?> constructor = getFirstSuitableConstructor(o, components.keySet()).get();
+                        final Constructor<?> constructor = getFirstSuitableConstructor(o, components.keySet())
+                                .orElseThrow(() -> new ConstructorInvocationException("No suitable constructors found"));
                         final Object[] params = Arrays.stream(constructor.getParameterTypes())
                                 .map(components::get).toArray();
                         try {
