@@ -1,5 +1,3 @@
-<%@ page import="java.util.List" %>
-<%@ page import="ru.itpark.implementation.model.Auto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
