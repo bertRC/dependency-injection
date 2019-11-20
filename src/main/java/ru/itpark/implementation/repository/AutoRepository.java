@@ -17,7 +17,7 @@ import java.util.Optional;
 public class AutoRepository {
     private final JdbcTemplate jdbcTemplate;
     private final DataSource ds;
-    private static final int minTextLenght = 3;
+    public static final int minTextLenght = 3;
 
     public AutoRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
