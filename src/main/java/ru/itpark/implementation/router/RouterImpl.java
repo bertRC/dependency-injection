@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
@@ -54,7 +53,7 @@ public class RouterImpl implements Router {
             val matcher = urlPattern.matcher(url);
             String queryName;
             String attribute;
-            // Sample: "/queryName/attribute"
+            // url template: "/queryName/attribute"
             if (matcher.find()) {
                 queryName = matcher.group(1);
                 attribute = matcher.group(2);
