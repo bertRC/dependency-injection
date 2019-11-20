@@ -23,9 +23,7 @@ public class RouterImpl implements Router {
     private final AutoService autoService;
     private final FileService fileService;
 
-//    private final Pattern detailsPattern = Pattern.compile("/details/(\\d+)$");
-//    private final Pattern removePattern = Pattern.compile("/remove/(\\d+)$");
-//    private final Pattern imagesPattern = Pattern.compile("/images/(.+)");
+    public static final Pattern urlPattern = Pattern.compile("/(.+)/(.*)$");
 
     @Override
     public void route(HttpServletRequest request, HttpServletResponse response) {
@@ -53,11 +51,18 @@ public class RouterImpl implements Router {
                 throw new NotFoundException();
             }
 
-            // Sample: /details/{id}
-            // TODO: обычно парсинг делают через регулярные выражения, но тут простой вариант
-            if (url.startsWith("/details/")) {
+            val matcher = urlPattern.matcher(url);
+            String queryName;
+            String attribute;
+            // Sample: "/queryName/attribute"
+            if (matcher.find()) {
+                queryName = matcher.group(1);
+                attribute = matcher.group(2);
+            } else return;
+
+            if (queryName.equals("details")) {
                 if (request.getMethod().equals("GET")) {
-                    val id = Integer.parseInt(url.substring("/details/".length()));
+                    val id = Long.parseLong(attribute);
                     val item = autoService.getById(id);
                     request.setAttribute("item", item);
                     request.getRequestDispatcher(ResourcesPaths.detailsJsp).forward(request, response);
@@ -67,9 +72,9 @@ public class RouterImpl implements Router {
                 throw new NotFoundException();
             }
 
-            if (url.startsWith("/remove/")) {
+            if (queryName.equals("remove")) {
                 if (request.getMethod().equals("POST")) {
-                    val id = Integer.parseInt(url.substring("/remove/".length()));
+                    val id = Long.parseLong(attribute);
                     autoService.removeById(id);
                     response.sendRedirect(rootUrl);
                     return;
@@ -78,9 +83,9 @@ public class RouterImpl implements Router {
                 throw new NotFoundException();
             }
 
-            if (url.startsWith("/images/")) {
+            if (queryName.equals("images")) {
                 if (request.getMethod().equals("GET")) {
-                    val id = url.substring("/images/".length());
+                    val id = attribute;
                     fileService.readFile(id, response.getOutputStream());
                     return;
                 }
@@ -88,13 +93,15 @@ public class RouterImpl implements Router {
                 throw new NotFoundException();
             }
 
-            if (url.startsWith("/search/")) {
+            if (queryName.equals("search")) {
                 if (request.getMethod().equals("GET")) {
                     val text = request.getParameter("text");
                     val items = autoService.doSearch(text);
                     request.setAttribute("items", items);
                     request.getRequestDispatcher(ResourcesPaths.searchResultsJsp).forward(request, response);
                 }
+
+                throw new NotFoundException();
             }
 
         } catch (Exception e) {
@@ -104,20 +111,6 @@ public class RouterImpl implements Router {
             } catch (ServletException | IOException ex) {
                 ex.printStackTrace();
             }
-        }
-    }
-}
-
-class Main {
-    public static void main(String[] args) {
-        String text = "/images/123";
-        String regex = "/(.+)/(\\d+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.find()) {
-            System.out.println(matcher.group(0));
-            System.out.println(matcher.group(1));
-            System.out.println(matcher.group(2));
         }
     }
 }
