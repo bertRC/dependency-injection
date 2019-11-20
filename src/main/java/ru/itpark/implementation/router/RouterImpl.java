@@ -1,6 +1,6 @@
 package ru.itpark.implementation.router;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import ru.itpark.implementation.model.Auto;
 import ru.itpark.exceptions.NotFoundException;
@@ -18,10 +18,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RouterImpl implements Router {
     private final AutoService autoService;
     private final FileService fileService;
+
+    private final Pattern detailsPattern = Pattern.compile("/details/(\\d+)$");
+    private final Pattern removePattern = Pattern.compile("/remove/(\\d+)$");
+    private final Pattern imagesPattern = Pattern.compile("/images/(.+)");
 
     @Override
     public void route(HttpServletRequest request, HttpServletResponse response) {
@@ -110,11 +114,11 @@ public class RouterImpl implements Router {
 
 class Main {
     public static void main(String[] args) {
-        String text = "/images/123k";
-        String regex = "/images/(\\d+)";
+        String text = "/images/123";
+        String regex = "/images/(\\d+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
-        System.out.println(matcher.find());
+//        System.out.println(matcher.find());
         if (matcher.find()) {
             System.out.println(matcher.group(1));
         }
