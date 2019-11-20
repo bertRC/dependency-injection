@@ -9,6 +9,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AutoRepository {
@@ -32,6 +33,21 @@ public class AutoRepository {
                         rs.getString("description"),
                         rs.getString("image")
                 )
+        );
+    }
+
+    public Optional<Auto> getById(long id) {
+        String sql = "SELECT id, name, description, image FROM autos WHERE id = ?;";
+        return jdbcTemplate.executeQueryForObject(ds, sql, stmt -> {
+                    stmt.setLong(1, id);
+                    return stmt;
+                }, rs ->
+                        new Auto(
+                                rs.getLong("id"),
+                                rs.getString("name"),
+                                rs.getString("description"),
+                                rs.getString("image")
+                        )
         );
     }
 
