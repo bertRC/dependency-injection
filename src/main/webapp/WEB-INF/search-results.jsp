@@ -33,6 +33,10 @@
                 <% } %>
             </div>
 
+            <form class="mt-3">
+                <a href="/" class="btn btn-secondary btn-sm active" role="button" aria-pressed="true">To Homepage</a>
+            </form>
+
         </div>
     </div>
 </div>
