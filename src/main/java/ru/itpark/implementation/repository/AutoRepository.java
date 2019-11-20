@@ -1,5 +1,6 @@
 package ru.itpark.implementation.repository;
 
+import ru.itpark.exceptions.InitializationException;
 import ru.itpark.exceptions.NotFoundException;
 import ru.itpark.framework.annotation.Component;
 import ru.itpark.domain.Auto;
@@ -17,12 +18,16 @@ public class AutoRepository {
     private final JdbcTemplate jdbcTemplate;
     private final DataSource ds;
 
-    public AutoRepository(JdbcTemplate jdbcTemplate) throws NamingException {
+    public AutoRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        InitialContext context = new InitialContext();
-        ds = (DataSource) context.lookup(ResourcesPaths.dbPath);
-        String sql = "CREATE TABLE IF NOT EXISTS autos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT NOT NULL, image TEXT);";
-        jdbcTemplate.executeUpdate(ds, sql);
+        try {
+            InitialContext context = new InitialContext();
+            ds = (DataSource) context.lookup(ResourcesPaths.dbPath);
+            String sql = "CREATE TABLE IF NOT EXISTS autos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT NOT NULL, image TEXT);";
+            jdbcTemplate.executeUpdate(ds, sql);
+        } catch (NamingException e) {
+            throw new InitializationException(e);
+        }
     }
 
     public List<Auto> getAll() {
