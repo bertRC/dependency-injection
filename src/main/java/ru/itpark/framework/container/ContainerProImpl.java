@@ -1,6 +1,8 @@
 package ru.itpark.framework.container;
 
 import org.reflections.Reflections;
+import ru.itpark.exceptions.ConstructorInvocationException;
+import ru.itpark.exceptions.MissingComponentsException;
 import ru.itpark.framework.annotation.Component;
 
 import java.lang.reflect.Constructor;
@@ -36,21 +38,21 @@ public class ContainerProImpl implements Container {
                             return constructor.newInstance(params);
                         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
-                            throw new RuntimeException(e);
+                            throw new ConstructorInvocationException(e);
                         }
                     }));
 
             if (currentGeneration.isEmpty()) {
                 HashSet<Class<?>> missingComponents = new HashSet<>(types);
                 missingComponents.removeAll(components.keySet());
-                throw new RuntimeException("Can not create instances of the following components: "
+                throw new MissingComponentsException("Can not create instances of the following components: "
                         + missingComponents);
             }
             components.putAll(currentGeneration);
         }
 
         if (components.isEmpty()) {
-            throw new RuntimeException("There is no components");
+            throw new MissingComponentsException("There is no components");
         }
 
         return components;
