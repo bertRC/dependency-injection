@@ -101,6 +101,15 @@ public class RouterImpl implements Router {
                 throw new NotFoundException();
             }
 
+            if (url.startsWith("/search/")) {
+                if (request.getMethod().equals("GET")) {
+                    val text = request.getParameter("text");
+                    val items = autoService.doSearch(text);
+                    request.setAttribute("items", items);
+                    request.getRequestDispatcher(ResourcesPaths.searchResultsJsp).forward(request, response);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             try {
