@@ -8,6 +8,7 @@ import ru.itpark.domain.Auto;
 import ru.itpark.implementation.repository.AutoRepository;
 
 import javax.servlet.http.Part;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -38,5 +39,10 @@ public class AutoService {
 
     public List<Auto> search(String text) {
         return repository.search(text);
+    }
+
+    public List<String> doSearch(String name) {
+        System.out.println("do search");
+        return Collections.emptyList();
     }
 }
